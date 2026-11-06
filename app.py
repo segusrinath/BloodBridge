@@ -213,5 +213,8 @@ def donor_respond():
     c.execute("INSERT INTO donor_responses(request_id,donor_phone,status,updated_at) VALUES(?,?,?,?) ON CONFLICT(request_id,donor_phone) DO UPDATE SET status=excluded.status,updated_at=excluded.updated_at",(rid,phone,status,now)); c.commit(); c.close()
     return jsonify(status=status,message='Your response has been recorded.')
 
+# Initialize the database for production WSGI servers such as Gunicorn.
+init_db()
+
 if __name__=='__main__':
-    init_db(); print('BloodBridge running at http://127.0.0.1:5000'); app.run(host='0.0.0.0',port=5000,debug=False)
+    print('BloodBridge running at http://127.0.0.1:5000'); app.run(host='0.0.0.0',port=5000,debug=False)
